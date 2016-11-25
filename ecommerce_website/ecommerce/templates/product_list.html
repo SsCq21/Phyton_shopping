@@ -1,0 +1,8 @@
+<a href="../cart_list/">カートの中身を表示する</a>
+<a href="../cart_reset/">カートを空にする</a>
+<a href="../order/">注文する</a>
+{% for product in products %}
+    <h1>{{ product.name }}</h1>
+    <img src="../../media/{{ product.image }}" alt="" width="200" height="200" border="0" />
+    <a href="../cart_add/{{ product.id }}">カートに入れる</a>
+{% endfor %}
