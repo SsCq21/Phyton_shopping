@@ -1,9 +1,7 @@
 # django-ecommerce-example
 
 
-## 動作方法
-
-このリポジトリをcloneします。
+## 如何运作。
 
 ```
 # pip install -r requirements.txt
@@ -12,53 +10,52 @@
 ```
 
 
-## Django管理画面認証情報
+## Django管理屏幕验证信息
 
-ユーザ名 : root
+用户名 : root
 
-パスワード : SakuraSakura
+密码 : SakuraSakura
 
 ## URL
 
 ```
-Django管理画面
+Django管理界面
 
 http://<IP or Hostname>:<port>/admin/
 
-商品一覧画面
+产品列表屏幕
 
 http://<IP or Hostname>:<port>/ec/list/
 
-カートの中身を表示する画面
+显示购物车的内容
 
 http://<IP or Hostname>:<port>/ec/cart_list/
 
-カートを空にする
+清空购物车
 
 http://<IP or Hostname>:<port>/ec/cart_reset/
 
-注文画面
+订单界面
 
 http://<IP or Hostname>:<port>/ec/order/
 
-注文完了画面
+订购完整
 
 http://<IP or Hostname>:<port>/ec/order_complete/
 ```
 
-## 初期データについて
+## 初始数据
 
-  以下のサイトの CC0 Public Domain の画像を利用しています。
+  使用以下网站的CC0 Public Domain的图像。
 
   https://pixabay.com
 
-## 注意・免責事項
+## 通知/免责声明
 
-本リポジトリのDjangoプロジェクト・アプリケーションは、開発研修用途で使用することを想定したサンプルアプリケーションです。
+此存储库中的Django项目应用程序是一个示例应用程序，旨在用于开发培训。
 
-実際の業務など開発研修用途以外では、利用しないでください。
+请不要将它用于开发培训应用以外的任何其他工作，例如实际工作。
 
-本リポジトリのDjangoプロジェクト・アプリケーションを使用した上で発生した、
+在使用此存储库的Django项目应用程序后发生，
 
-何らかのトラブルや損失・損害等につきましては一切責任を問わないものとします。
-
+对于任何麻烦，损失或损害，我们不承担任何责任。
