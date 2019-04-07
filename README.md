@@ -1,4 +1,4 @@
-# django-ecommerce-example
+# Phyton_shopping
 
 
 ## 如何运作。
