@@ -324,19 +324,37 @@
                         <h4>Image</h4>
                     </td>
                     <td align="center">
-                        <h4>Cart</h4>
+                        <h4>Stock</h4>
+                    </td>
+                    <td align="center">
+                        <h4>Price</h4>
+                    </td>
+                    <td align="center">
+                        <h4> </h4>
                     </td>
                 </tr>
             </thead>
-            
+
             {% for product in products %}
-            <tbody><tr>
-            <td align="center"><h3>{{ product.name }}</h3></td>
-            <td align="center"><img height=100 src="../../media/{{ product.image }}" alt="" width="200" height="200" border="0" /></td>
-            <td align="center"><a href="../cart_add/{{ product.id }}"><h3 class="btn btn-info">Add to Cart</h3></a></td>
-        </tr>
-            {% endfor %}
-        
+            <tbody>
+                <tr>
+                    <td align="center">
+                        <h3>{{ product.name }}</h3>
+                    </td>
+                    <td align="center"><img height=150 src="../../media/{{ product.image }}" alt="" width="200" height="200"
+                            border="0" /></td>
+                    <td align="center">
+                        <h3>{{ product.stock }}</h3>
+                    </td>
+                    <td align="center">
+                        <h3>{{ product.price }}</h3>
+                    </td>
+                    <td align="center"><a href="../cart_add/{{ product.id }}">
+                            <h3 class="btn btn-info">Add to Cart</h3>
+                        </a></td>
+                </tr>
+                {% endfor %}
+
 
 </body>
 
