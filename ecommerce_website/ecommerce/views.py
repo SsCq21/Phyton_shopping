@@ -6,13 +6,13 @@ from ecommerce.models import *
 
 def index(request):
     """
-    商品一覧画面(/ec/list/)が呼び出された際に呼び出されるビューです。
-    商品情報を返します。
+    This view is called when the product list screen (/ ec / list /) is called.
+    Return product information
     """
 
     products = get_list_or_404(Product)
 
-    #   セッションにカートの情報を格納するListを定義します。
+    # Define a List that stores cart information in the session.
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
 
@@ -22,11 +22,11 @@ def index(request):
 
 def cart_add(request, product_id):
     """
-    カートに任意の商品を追加する場合に呼び出されるビューです。
-    カート(セッション)に任意の商品の商品IDを追加します。
+    It is a view that is called when you add any product to the cart.
+     Add the product ID of any product to the cart (session).
     """
 
-    #   カート(セッション)に商品を追加します。
+    #   Add a product to your cart (session).
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
     cart = request.session['cart']
@@ -41,15 +41,15 @@ def cart_add(request, product_id):
 
 def cart_delete(request, product_id):
     """
-    カートに入っている任意の商品を削除する場合に呼び出されるビューです。
-    カート(セッション)から任意の商品の商品IDを削除します。
+    This is a view that is called when you delete any item in the cart.
+     Delete the product ID of any product from the cart (session).
     """
 
-    #   カート(セッション)から指定された商品を削除します。
+    #   Removes the specified product from the cart (session).
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
     cart = request.session['cart']
-    #   同じ商品が複数listに入っていた場合に、指定されてIDのオブジェクトをすべて削除する
+    #   Delete all objects with the specified ID if the same product is in multiple lists
     cart = [item for item in cart if item is not str(product_id)]
     request.session['cart'] = cart
 
@@ -62,11 +62,11 @@ def cart_delete(request, product_id):
 
 def cart_reset(request):
     """
-    カートを空にするがクリックされた場合に実行されるビューです。
-    カートの中身(セッション)を空にします。
+    This is the view that will be executed if the cart is empty but clicked.
+     Empty the contents of the cart (session).
     """
 
-    #   カート(セッション)からすべての商品を削除します。
+    #   Remove all products from your cart (session).
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
     del request.session['cart']
@@ -79,46 +79,46 @@ def cart_reset(request):
 
 def cart_list(request):
     """
-    カートの中身を表示するページが表示される場合に実行されるビューです。
-    カートに入っている商品情報を返します。
+    This view is executed when the page displaying the contents of the cart is displayed.
+     Product information in the cart is returned.
     """
 
-    #   カート(セッション)内にある商品IDを取得します。
+    #   Acquire the product ID in the cart (session).
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
     cart = request.session['cart']
 
-    #   カートに入っている商品の情報を取得します
+    #   Get product information in the cart
     products = Product.objects.filter(id__in=cart)
 
     return render(request, 'cart_list.html', {'products': products})
 
 def order(request):
     """
-    注文画面が表示される場合に実行されるビューです。
-    カートに入っている商品情報と決済方法と注文画面を返します。
+   This view is executed when the order screen is displayed.
+     Product information and payment method in the cart and return the order screen.
     """
 
-    #   カート(セッション)内にある商品IDを取得します。
+    #   Acquire the product ID in the cart (session).
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
     cart = request.session['cart']
 
-    #   カートに入っている商品の情報を取得します
+    #   Get product information in the cart
     products = Product.objects.filter(id__in=cart)
 
-    #   決済方法を取得します。
+    #   Get the payment method.
     payments = get_list_or_404(Payment)
 
     return render(request, 'order.html', {'products': products, 'payments': payments})
 
 def order_execute(request):
     """
-    注文画面からPOSTされた際に実行されるビューです。
-    お客様情報を保存し注文された商品情報を保存します。
+   It is a view that is executed when POSTed from the order screen.
+     Save customer information and save ordered product information.
     """
 
-    #   送信されたお客様情報を保存します。
+    #   Save the sent customer information.
     customer = Customer(first_name=request.POST['first_name'],
                         last_name=request.POST['last_name'],
                         postal_code=request.POST['postal_code'],
@@ -130,37 +130,37 @@ def order_execute(request):
                         email=request.POST['email'])
     customer.save()
 
-    #   Paymentオブジェクトを取得します。
+    #   Get Payment object.
     payment = Payment.objects.get(id=int(request.POST['payment']))
 
-    #   注文情報を保存します。
+    #   Save order information.
     order = Order(customer=customer, payment=payment)
     order.save()
 
-    #   カート(セッション)内にある商品IDを取得します。
+    #   Acquire the product ID in the cart (session)
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
     cart = request.session['cart']
 
-    #   カートに入っている商品の情報を取得します
+    #   Get product information in the cart
     products = Product.objects.filter(id__in=cart)
 
     for product in products:
         order_product = Order_Product(order=order, product=product, count=1, price=product.price)
         order_product.save()
 
-    #   注文完了画面にリダイレクトします。
+    #   Redirect to the order complete screen.
     return redirect('/ec/order_complete/')
 
 def order_complete(request):
     """
-    注文完了時に実行されるビューです。
-    注文完了画面を返します。
+    It is a view that is executed when the order is completed.
+     Returns the order complete screen.
     """
 
     response = render_to_response('order_complete.html')
 
-    #   カートの中身を削除します
+    #   Delete the contents of the cart.
     if request.session.has_key('cart'):
         del request.session['cart']
     return response
