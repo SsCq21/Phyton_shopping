@@ -12,7 +12,7 @@ h21 {text-align:center;color:blue; size:13px}
  
  *{margin:0; padding:0}
 body{width:"100%"; margin:20px auto; font-size:14px;}
-/*导航条*/
+/*Navigation bar*/
 #nav {background-color:blue; color:#fff;height:25px;line-height:25px;text-align:center;list-style:none;}
  #nav a{color:#fff;}
  #nav li{width:165px;float:left;position:relative;z-index:1;}
