@@ -1,14 +1,126 @@
-﻿<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-        <th>Price</th>
-    </tr>
-{% for product in products %}
-    <tr>
-        <td>{{ product.id }}</td>
-        <td>{{ product.name }}</td>
-        <td>{{ product.price }}</td>
-    </tr>
-{% endfor %}
-</table>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>cart_list.html</title>
+
+    <meta name="keywords" content="keyword1,keyword2,keyword3">
+    <meta name="description" content="this is my page">
+    <meta name="content-type" content="text/html; charset=UTF-8">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <link href="../../css/memo.css" rel="stylesheet" type="text/css" />
+    <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+</head>
+
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
+
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
+
+    input[type=text],
+    select {
+        width: 50px;
+        padding: 7px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
+</style>
+
+<script type="text/javascript">
+    function changen() {
+        var n = document.getElementById("number").value;
+        var p = document.getElementById("p").value;
+        var total = n * p;
+        document.getElementById("demo").innerHTML = total;
+    }
+    
+</script>
+
+<body style="background: url(../../media/cm.jpg);background-size:cover">
+
+    <div class="text-center">
+        <h1 style="text-align:center">Cart List</h1>
+    </div>
+
+    <p style="margin:20px"></p>
+
+    <div class="row">
+        <div class="col-md-2 text-center">.</div>
+        <div class="col-md-8 text-center">
+
+            <table class="table table-bordered margin-top:-50px" width=100% align=center>
+                <tr>
+                    <th align="center">ID</th>
+                    <th align="center">Name</th>
+                    <th align="center">Price</th>
+                    <th align="center">Amount</th>
+                    <th align="center">TotalPrice</th>
+                    <th></th>
+
+                </tr>
+                {% for product in products %}
+                <tr>
+                    <td align="center">{{ product.id }}</td>
+                    <td align="center">{{ product.name }}</td>
+                    <td align="center"><input type="text" id="p" size="4" value="{{ product.price }}" readonly="readonly"
+                            style="border:none;background-color:transparent"></td>
+                    <td align="center">
+                        <input type="text" id="number" name="number" value="1" oninput="changen()" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
+                            else{this.value=this.value.replace(/\D/g,'')}"
+                            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
+                            else{this.value=this.value.replace(/\D/g,'')}">
+                    </td>
+                    <td align="center">
+                        <p id="demo">{{ product.price }}</p>
+                    </td>
+                    <td align="center"><input type='button' value='X' onclick='del(this);'/></td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-md-2 text-center">.</div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-2 text-center">.</div>
+        <div class="col-md-4 text-center">
+            <a href='/ec/order/'>
+                <h3 class="btn btn-success">Submit</h3>
+            </a>
+        </div>
+        <div class="col-md-4 text-center">
+            <a href='/ec/list/'>
+                <h3 class="btn btn-danger">Back to HOME</h3>
+            </a>
+        </div>
+        <div class="col-md-2 text-center">.</div>
+    </div>
+
+
+</body>
+
+</html>
