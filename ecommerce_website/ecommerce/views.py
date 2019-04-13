@@ -137,6 +137,7 @@ def order_execute(request):
     order = Order(customer=customer, payment=payment)
     order.save()
 
+
     #   Acquire the product ID in the cart (session)
     if not request.session.has_key('cart'):
         request.session['cart'] = list()
@@ -148,9 +149,24 @@ def order_execute(request):
     for product in products:
         order_product = Order_Product(order=order, product=product, count=1, price=product.price)
         order_product.save()
+        if product.stock > 0:
+            product.stock = product.stock - order_product.count
+            product.save()
+            return redirect('/ec/order_complete/')
+        else:
+            return redirect('/ec/fail/')
+
+
+def fail(request):
+    response = render_to_response('fail.html')
+
+    #   Delete the contents of the cart.
+    if request.session.has_key('cart'):
+        del request.session['cart']
+    return response
 
     #   Redirect to the order complete screen.
-    return redirect('/ec/order_complete/')
+
 
 def order_complete(request):
     """
