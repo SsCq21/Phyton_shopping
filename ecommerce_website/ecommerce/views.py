@@ -152,9 +152,10 @@ def order_execute(request):
         if product.stock > 0:
             product.stock = product.stock - order_product.count
             product.save()
-            return redirect('/ec/order_complete/')
         else:
             return redirect('/ec/fail/')
+
+    return redirect('/ec/order_complete/')
 
 
 def fail(request):
