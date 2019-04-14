@@ -294,7 +294,15 @@
             background-color: #fff;
             color: #122;
         }
+
     </style>
+    <script type="text/javascript">
+        function add_hint() {
+            alert("Add successfully!");
+            return;
+        }
+
+    </script>
 
 </head>
 
@@ -341,15 +349,15 @@
                     <td align="center">
                         <h3>{{ product.name }}</h3>
                     </td>
-                    <td align="center"><img height=150 src="../../media/{{ product.image }}" alt="" width="200" height="200"
-                            border="0" /></td>
+                    <td align="center"><img height=150 src="../../media/{{ product.image }}" alt="" width="200"
+                            height="200" border="0" /></td>
                     <td align="center">
                         <h3>{{ product.stock }}</h3>
                     </td>
                     <td align="center">
                         <h3>{{ product.price }}</h3>
                     </td>
-                    <td align="center"><a href="../cart_add/{{ product.id }}">
+                    <td align="center"><a href="../cart_add/{{ product.id }}" onclick="add_hint()">
                             <h3 class="btn btn-info">Add to Cart</h3>
                         </a></td>
                 </tr>
