@@ -57,6 +57,12 @@
         document.getElementById("demo").innerHTML = total;
     }
     
+    function del(obj) {
+		$tr = $(obj).parent().parent();
+		$tr.remove();
+		total();
+	}
+    
 </script>
 
 <body style="background: url(../../media/cm.jpg);background-size:cover">
