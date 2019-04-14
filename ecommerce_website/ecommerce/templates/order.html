@@ -17,34 +17,118 @@
 </head>
 
 <style>
-
     table {
-  border-collapse: collapse;
-  width: 100%;
-}
+        border-collapse: collapse;
+        width: 100%;
+    }
 
-th, td {
-  text-align: left;
-  padding: 8px;
-}
+    th,
+    td {
+        text-align: left;
+        padding: 8px;
+    }
 
-tr:nth-child(even){background-color: #f2f2f2}
+    tr:nth-child(even) {
+        background-color: #f2f2f2
+    }
 
-th {
-  background-color: #4CAF50;
-  color: white;
-}
-input[type=text], select {
-  width: 250px;
-  padding: 7px;
-  margin: 8px 0;
-  display: inline-block;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
+    th {
+        background-color: #4CAF50;
+        color: white;
+    }
 
+    input[type=text],
+    select {
+        width: 250px;
+        padding: 7px;
+        margin: 8px 0;
+        display: inline-block;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+    }
 </style>
+
+<script type="text/javascript">
+    function check() {
+        var lastname = document.getElementById("last_name").value;
+        if (lastname == "") {
+            //alert("Username cannot be null！");
+            lastname1.innerHTML = "Pls input Lastname!";
+            lastname1.style.color = "red";
+            return false;
+        }
+        else {
+            lastname1.innerHTML = "&radic;";
+            lastname1.style.color = "green";
+        }
+
+        var firstname = document.getElementById("first_name").value;
+        if (firstname == "") {
+            //alert("Username cannot be null！");
+            firstname1.innerHTML = "Pls input Firstname!";
+            firstname1.style.color = "red";
+            return false;
+        }
+
+        var state = document.getElementById("prefecture").value;
+        if (state == "") {
+            state1.innerHTML = "Pls input State!";
+            state1.style.color = "red";
+            return false;
+        }
+
+        var city = document.getElementById("city").value;
+        if (city == "") {
+            city1.innerHTML = "Pls input City!";
+            city1.style.color = "red";
+            return false;
+        }
+
+        var street1 = document.getElementById("street1").value;
+        if (street1 == "") {
+            street11.innerHTML = "Pls input Street!";
+            street11.style.color = "red";
+            return false;
+        }
+
+        var tel = document.getElementById("tel").value;
+        if (tel == "") {
+            tel1.innerHTML = "Pls input Telephone!";
+            tel1.style.color = "red";
+            return false;
+        }
+
+        var email = document.getElementById("email").value;
+        if (email == "") {
+            email1.innerHTML = "Pls input Email!";
+            email1.style.color = "red";
+            return false;
+        }
+        else {
+            var ema0 = /^\w+@\w+.[A-Za-z]{2,3}(.[A-Za-z]{2,3})?$/;
+            if (ema0.test(email) == false) {
+                email1.innerHTML = "Email format wrong!";
+                email1.style.color = "red";
+                return false;
+            }
+        }
+
+        var payment = document.getElementById("payment_name").value;
+        if (payment == "") {
+            payment1.innerHTML = "Pls select Payment!";
+            payment1.style.color = "red";
+            return false;
+        }
+        else {
+            lastname1.innerHTML = "&radic;";
+            lastname1.style.color = "green";
+            return true;
+        }
+
+    }
+
+</script>
 
 <body style="background: url(../../media/cm.jpg);background-size:cover">
 
@@ -57,7 +141,7 @@ input[type=text], select {
     <div class="row">
         <div class="col-md-2 text-center">.</div>
         <div class="col-md-8 text-center">
-            
+
             <table class="table table-bordered margin-top:-50px" width=100%>
                 <tr>
                     <th>ProductID</th>
@@ -85,30 +169,33 @@ input[type=text], select {
 
         <div class="col-md-6 text-center" style="background-color:rgba(0,0,50,0.1);">
 
-                <br>
-        <h3>Input your Information: </h3><br>
-        <form action="../order_execute/" method="post">
-            {% csrf_token %}
-            <h4>Last Name: <input name="last_name" type="text" id="last_name"></h4>
-            <h4>First Name:<input name="first_name" type="text" id="first_name"></h4>
-            <h4>Zip:<input name="postal_code" type="text" id="postal_code"></h4>
-            <h4>State:<input name="prefecture" type="text" id="prefecture"></h4>
-            <h4>City:<input name="city" type="text" id="city" ></h4>
-            <h4>Street1:<input name="street1" type="text" id="street1" ></h4>
-            <h4>Street2:<input name="street2" type="text" id="street2"></h4>
-            <h4>Telephone:<input name="tel" type="text" id="tel" ></h4>
-            <h4>E-mail:<input name="email" type="text" id="email" ></h4>
-            <h4>Payment:
-            {% for payment in payments %}
-            <input type="radio" name="payment" id="payment_name" value="{{ payment.id }}" />
-            <label for="payment_name">{{ payment.name }}</label><br/>&nbsp;&nbsp;
-            {% endfor %}</h4>
+            <br>
+            <h3>Input your Information: </h3><br>
+            <form action="../order_execute/" method="post" onsubmit="return check()">
+                {% csrf_token %}
+                <h4>Last Name: <input name="last_name" type="text" id="last_name"><a id="lastname1"></a></h4>
+                <h4>First Name:<input name="first_name" type="text" id="first_name"><a id="firstname1"></a></h4>
+                <h4>Zip:<input name="postal_code" type="text" id="postal_code"></h4>
+                <h4>State:<input name="prefecture" type="text" id="prefecture"><a id="state1"></a></h4>
+                <h4>City:<input name="city" type="text" id="city"><a id="city1"></a></h4>
+                <h4>Street1:<input name="street1" type="text" id="street1"><a id="street11"></a></h4>
+                <h4>Street2:<input name="street2" type="text" id="street2"></h4>
+                <h4>Telephone:<input name="tel" type="text" id="tel" onkeyup="this.value=this.value.replace(/\D/g,'')"
+                        onafterpaste="this.value=this.value.replace(/\D/g,'')"><a id="tel1"></a></h4>
+                <h4>E-mail:<input name="email" type="text" id="email"><a id="email1"></a></h4>
+                <h4>Payment:
+                    {% for payment in payments %}
+                    <input type="radio" name="payment" id="payment_name" value="{{ payment.id }}" checked/>
+                    <label for="payment_name">{{ payment.name }}</label><br />&nbsp;&nbsp;
+                    {% endfor %}
+                    <a id="payment1"></a>
+                </h4>
 
-            <input type="submit" value="submit" class="btn btn-primary"/>
-        </form>
-        <p style="margin:10px"></p>
-    </div>
-    <div class="col-md-3 text-center">.</div>
+                <input type="submit" value="submit" class="btn btn-primary" />
+            </form>
+            <p style="margin:10px"></p>
+        </div>
+        <div class="col-md-3 text-center">.</div>
     </div>
 
 
