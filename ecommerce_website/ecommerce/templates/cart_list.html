@@ -50,19 +50,37 @@
 </style>
 
 <script type="text/javascript">
+/*
     function changen() {
         var n = document.getElementById("number").value;
         var p = document.getElementById("p").value;
         var total = n * p;
         document.getElementById("demo").innerHTML = total;
     }
-    
+    */
+
     function del(obj) {
-		$tr = $(obj).parent().parent();
-		$tr.remove();
-		total();
-	}
-    
+        $tr = $(obj).parent().parent();
+        $tr.remove();
+        total();
+    }
+
+    function change(btn, n) {
+
+        $td = $(btn).parent().siblings();
+        $td = $(btn).parent();
+        $inputs = $td.children();
+        $count = parseFloat($inputs.eq(1).val());
+        if ($count <= 1 && n < 0) {
+			return;
+		}
+        $count = $count + n;
+		$inputs.eq(1).val($count);
+        $price = parseFloat($td.prev().html());
+		$money = $price * $count;
+		$td.next().html($money);
+    }
+
 </script>
 
 <body style="background: url(../../media/cm.jpg);background-size:cover">
@@ -91,21 +109,22 @@
                 <tr>
                     <td align="center">{{ product.id }}</td>
                     <td align="center">{{ product.name }}</td>
-                    <td align="center"><input type="text" id="p" size="4" value="{{ product.price }}" readonly="readonly"
-                            style="border:none;background-color:transparent"></td>
+                    <td align="center">{{ product.price }}</td>
                     <td align="center">
-                        <input type="text" id="number" name="number" value="1" oninput="changen()" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
-                            else{this.value=this.value.replace(/\D/g,'')}"
-                            onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
-                            else{this.value=this.value.replace(/\D/g,'')}">
+                        <input type='button' value='-' onclick='change(this,-1);' />
+                            <input type='text' id='num' size='1' readonly='readonly' value='1'/>
+                        <input type='button' value='+' onclick='change(this,+1);' />
                     </td>
                     <td align="center">
                         <p id="demo">{{ product.price }}</p>
                     </td>
-                    <td align="center"><input type='button' value='X' onclick='del(this);'/></td>
+                    <td align="center"><input type='button' value='X' onclick='del(this);' /></td>
                 </tr>
                 {% endfor %}
             </table>
+
+            </form>
+
         </div>
 
         <div class="col-md-2 text-center">.</div>
