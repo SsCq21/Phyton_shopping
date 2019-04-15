@@ -3,6 +3,9 @@ from django.shortcuts import redirect, render, get_list_or_404, render_to_respon
 from ecommerce.models import *
 
 # Create your views here.
+global count_list
+count_list = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+
 
 def index(request):
     """
@@ -19,6 +22,7 @@ def index(request):
     response = render(request, 'product_list.html', {'products': products})
 
     return response
+
 
 def cart_add(request, product_id):
     """
@@ -38,6 +42,7 @@ def cart_add(request, product_id):
     response = redirect('/ec/list/', {'products': products})
 
     return response
+
 
 def cart_delete(request, product_id):
     """
@@ -77,6 +82,7 @@ def cart_reset(request):
 
     return response
 
+
 def cart_list(request):
     """
     This view is executed when the page displaying the contents of the cart is displayed.
@@ -93,6 +99,7 @@ def cart_list(request):
 
     return render(request, 'cart_list.html', {'products': products})
 
+
 def order(request):
     """
    This view is executed when the order screen is displayed.
@@ -107,10 +114,23 @@ def order(request):
     #   Get product information in the cart
     products = Product.objects.filter(id__in=cart)
 
+    # get the count of different product
+    n = 0
+    for product in products:
+        str = request.POST.get(product.name, '')
+        count_list[n] = int(str)
+        if count_list[n] > product.stock:
+            return redirect('/ec/fail/')
+        n = n+1
+
+
+    num = 0
     #   Get the payment method.
     payments = get_list_or_404(Payment)
 
-    return render(request, 'order.html', {'products': products, 'payments': payments})
+    return render(request, 'order.html', {'products': products, 'payments': payments, 'count_list': count_list,
+                                          'num': num})
+
 
 def order_execute(request):
     """
@@ -145,11 +165,12 @@ def order_execute(request):
 
     #   Get product information in the cart
     products = Product.objects.filter(id__in=cart)
-
+    n = 0
     for product in products:
-        order_product = Order_Product(order=order, product=product, count=1, price=product.price)
+        order_product = Order_Product(order=order, product=product, count=count_list[n], price=product.price)
+        n = n+1
         order_product.save()
-        if product.stock > 0:
+        if product.stock - order_product.count >= 0:
             product.stock = product.stock - order_product.count
             product.save()
         else:

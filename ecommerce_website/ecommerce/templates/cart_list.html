@@ -57,12 +57,6 @@
         document.getElementById("demo").innerHTML = total;
     }
     
-    function del(obj) {
-		$tr = $(obj).parent().parent();
-		$tr.remove();
-		total();
-	}
-    
 </script>
 
 <body style="background: url(../../media/cm.jpg);background-size:cover">
@@ -73,6 +67,8 @@
 
     <p style="margin:20px"></p>
 
+    <form action="/ec/order/" method="post">
+    {%csrf_token%}
     <div class="row">
         <div class="col-md-2 text-center">.</div>
         <div class="col-md-8 text-center">
@@ -94,7 +90,9 @@
                     <td align="center"><input type="text" id="p" size="4" value="{{ product.price }}" readonly="readonly"
                             style="border:none;background-color:transparent"></td>
                     <td align="center">
-                        <input type="text" id="number" name="number" value="1" oninput="changen()" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
+
+                        <input type="text" id="number" name="{{ product.name }}" value="1" oninput="changen()"
+                               onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
                             else{this.value=this.value.replace(/\D/g,'')}"
                             onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}
                             else{this.value=this.value.replace(/\D/g,'')}">
@@ -114,9 +112,11 @@
     <div class="row">
         <div class="col-md-2 text-center">.</div>
         <div class="col-md-4 text-center">
-            <a href='/ec/order/'>
-                <h3 class="btn btn-success">Submit</h3>
-            </a>
+
+                <h3 >
+                    <input type="submit" value="Submit" class="btn btn-success">
+                </h3>
+
         </div>
         <div class="col-md-4 text-center">
             <a href='/ec/list/'>
@@ -125,6 +125,7 @@
         </div>
         <div class="col-md-2 text-center">.</div>
     </div>
+    </form>
 
 
 </body>
