@@ -10,6 +10,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.cookie.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <link href="../../css/memo.css" rel="stylesheet" type="text/css" />
@@ -24,7 +26,7 @@
 
     th,
     td {
-        text-align: left;
+        text-align: center;
         padding: 8px;
     }
 
@@ -50,6 +52,13 @@
 </style>
 
 <script type="text/javascript">
+    function price() {
+        var value = localStorage["price"];
+        //alert(value); 
+        total.innerHTML = value;
+    }
+    window.onload = price;
+
     function check() {
         var lastname = document.getElementById("last_name").value;
         if (lastname == "") {
@@ -139,26 +148,34 @@
     <p style="margin:20px"></p>
 
     <div class="row">
-        <div class="col-md-2 text-center">.</div>
-        <div class="col-md-8 text-center">
+        <div class="col-md-3 text-center">.</div>
+        <div class="col-md-6 text-center">
 
             <table class="table table-bordered margin-top:-50px" width=100%>
                 <tr>
-                    <th>ProductID</th>
-                    <th>Name</th>
-                    <th>Price</th>
+                    <th>Product ID</th>
+                    <th>Product Name</th>
                 </tr>
                 {% for product in products %}
                 <tr>
                     <td>{{ product.id }}</td>
                     <td>{{ product.name }}</td>
-                    <td>{{ product.price }}</td>
                 </tr>
                 {% endfor %}
+                <tr>
+                    <td>
+                        <h4>Total Price:</h4>
+                    </td>
+                    <td>
+                        <h4>
+                            <p id="total"></p>
+                        </h4>
+                    </td>
+                </tr>
             </table>
 
         </div>
-        <div class="col-md-2 text-center">.</div>
+        <div class="col-md-3 text-center">.</div>
 
     </div>
 
@@ -185,24 +202,29 @@
                 <h4>E-mail:<input name="email" type="text" id="email"><a id="email1"></a></h4>
                 <h4>Payment:
                     {% for payment in payments %}
-                    <input type="radio" name="payment" id="payment_name" value="{{ payment.id }}" checked/>
+                    <input type="radio" name="payment" id="payment_name" value="{{ payment.id }}" checked />
                     <label for="payment_name">{{ payment.name }}</label><br />&nbsp;&nbsp;
                     {% endfor %}
                     <a id="payment1"></a>
                 </h4>
 
-                <input type="submit" value="submit" class="btn btn-primary" />
+                <input type="submit" value="submit" class="btn btn-success" />
             </form>
             <p style="margin:10px"></p>
         </div>
         <div class="col-md-3 text-center">.</div>
     </div>
-    
-    <p style="margin:10px"></p>
-    <div class="text-center">
-        <a href='/ec/list/'>
-            <h3 class="btn btn-danger">Back to HOME</h3>
-        </a>
+    <div class=row>
+        <div class="col-md-2 text-center">.</div>
+        <div class="col-md-4 text-center">
+            <a href='/ec/cart_list/'>
+                <h3 class="btn btn-primary">Back to Cart_List</h3>
+            </a>
+        </div>
+        <div class="col-md-4 text-center"><a href='/ec/list/'>
+                <h3 class="btn btn-danger">Back to HOME</h3>
+            </a></div>
+        <div class="col-md-2 text-center">.</div>
     </div>
 
 
