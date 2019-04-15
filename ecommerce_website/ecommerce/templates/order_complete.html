@@ -14,6 +14,12 @@
 
     <link href="../../css/memo.css" rel="stylesheet" type="text/css" />
     <!--<link rel="stylesheet" type="text/css" href="./styles.css">-->
+
+    <script type="text/javascript">
+        function success() {
+            localStorage["price"] = 0; 
+        }
+        </script>
 </head>
 
 <body style="background: url(../../media/cm.jpg);background-size:cover">
@@ -23,7 +29,7 @@
             <h1 style="text-align:center">Order completed successfully!</h1>
             <p style="margin:20px"></p>
             <a href='/ec/list/'>
-                <h3 class="btn btn-danger">Back to HOME</h3>
+                <h3 class="btn btn-danger" onclick="success()">Back to HOME</h3>
             </a>
      </div>
 
