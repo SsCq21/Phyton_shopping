@@ -10,6 +10,8 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.min.js"></script>
+    <script type="text/javascript" src="./js/jquery.cookie.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
 
     <link href="../../css/memo.css" rel="stylesheet" type="text/css" />
@@ -24,7 +26,7 @@
 
     th,
     td {
-        text-align: left;
+        text-align: center;
         padding: 8px;
     }
 
@@ -50,14 +52,22 @@
 </style>
 
 <script type="text/javascript">
-/*
-    function changen() {
-        var n = document.getElementById("number").value;
-        var p = document.getElementById("p").value;
-        var total = n * p;
-        document.getElementById("demo").innerHTML = total;
-    }
-    */
+    /*
+    window.onload = function () {
+        total();
+    }*/
+    /*
+    $(document).ready(function () {
+        total();
+    });*/
+    /*
+       function changen(){
+           var n = document.getElementById("number").value;
+           var p = document.getElementById("p").value;
+           var total = n * p;
+           document.getElementById("demo").innerHTML = total;
+       }
+       */
 
     function del(obj) {
         $tr = $(obj).parent().parent();
@@ -72,18 +82,31 @@
         $inputs = $td.children();
         $count = parseFloat($inputs.eq(1).val());
         if ($count <= 1 && n < 0) {
-			return;
-		}
+            return;
+        }
         $count = $count + n;
-		$inputs.eq(1).val($count);
+        $inputs.eq(1).val($count);
         $price = parseFloat($td.prev().html());
-		$money = $price * $count;
-		$td.next().html($money);
+        $money = $price * $count;
+        $td.next().html($money);
+        total();
     }
 
+    function total() {
+        $trs = $("#goods tr");
+        $sum = 0;
+        for (var i = 0; i < $trs.length; i++) {
+            $tds = $trs.eq(i).children();
+            $price = parseFloat($tds.eq(4).html());
+            $sum += $price;
+        }
+        $("#total").html("<h4>"+$sum+"</h4>");
+        localStorage["price"] = $sum; 
+        
+    }
 </script>
 
-<body style="background: url(../../media/cm.jpg);background-size:cover">
+<body onload="total()" style="background: url(../../media/cm.jpg);background-size:cover">
 
     <div class="text-center">
         <h1 style="text-align:center">Cart List</h1>
@@ -91,59 +114,73 @@
 
     <p style="margin:20px"></p>
 
-    <div class="row">
-        <div class="col-md-2 text-center">.</div>
-        <div class="col-md-8 text-center">
+    <form action="/ec/order/" method="post">
+        {%csrf_token%}
+        <div class="row">
+            <div class="col-md-2 text-center">.</div>
+            <div class="col-md-8 text-center">
 
-            <table class="table table-bordered margin-top:-50px" width=100% align=center>
-                <tr>
-                    <th align="center">ID</th>
-                    <th align="center">Name</th>
-                    <th align="center">Price</th>
-                    <th align="center">Amount</th>
-                    <th align="center">TotalPrice</th>
-                    <th></th>
+                <table class="table table-bordered margin-top:-50px" width=100% align=center>
+                    <thead>
+                        <tr>
+                            <th align="center">ID</th>
+                            <th align="center">Name</th>
+                            <th align="center">Price</th>
+                            <th align="center">Amount</th>
+                            <th align="center">TotalPrice</th>
+                            <th></th>
 
-                </tr>
-                {% for product in products %}
-                <tr>
-                    <td align="center">{{ product.id }}</td>
-                    <td align="center">{{ product.name }}</td>
-                    <td align="center">{{ product.price }}</td>
-                    <td align="center">
-                        <input type='button' value='-' onclick='change(this,-1);' />
-                            <input type='text' id='num' size='1' readonly='readonly' value='1'/>
-                        <input type='button' value='+' onclick='change(this,+1);' />
-                    </td>
-                    <td align="center">
-                        <p id="demo">{{ product.price }}</p>
-                    </td>
-                    <td align="center"><input type='button' value='X' onclick='del(this);' /></td>
-                </tr>
-                {% endfor %}
-            </table>
+                    </thead>
+                    </tr>
+                    <tbody id="goods">
+                        {% for product in products %}
+                        <tr>
+                            <td align="center">{{ product.id }}</td>
+                            <td align="center">{{ product.name }}</td>
+                            <td align="center">{{ product.price }}</td>
+                            <td align="center">
+                                <input type='button' value='-' onclick='change(this,-1);' />
+                                <input type='text' id="number" name="{{ product.name }}" size='1' readonly='readonly'
+                                    value='1' />
+                                <input type='button' value='+' onclick='change(this,+1);' />
+                            </td>
+                            <td align="center">{{ product.price }}</td>
+                            <td align="center"><input type='button' value='X' onclick='del(this);' /></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td><h4>Total:</h4></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td id="total"></td>
+                            </tr>
+                    </tfoot>
+                </table>
+            </div>
 
-            </form>
-
+            <div class="col-md-2 text-center">.</div>
         </div>
 
-        <div class="col-md-2 text-center">.</div>
-    </div>
+        <div class="row">
+            <div class="col-md-2 text-center">.</div>
+            <div class="col-md-4 text-center">
 
-    <div class="row">
-        <div class="col-md-2 text-center">.</div>
-        <div class="col-md-4 text-center">
-            <a href='/ec/order/'>
-                <h3 class="btn btn-success">Submit</h3>
-            </a>
+                <h3>
+                    <input type="submit" value="Submit" class="btn btn-primary">
+                </h3>
+
+            </div>
+            <div class="col-md-4 text-center">
+                <a href='/ec/list/'>
+                    <h3 class="btn btn-danger">Back to HOME</h3>
+                </a>
+            </div>
+            <div class="col-md-2 text-center">.</div>
         </div>
-        <div class="col-md-4 text-center">
-            <a href='/ec/list/'>
-                <h3 class="btn btn-danger">Back to HOME</h3>
-            </a>
-        </div>
-        <div class="col-md-2 text-center">.</div>
-    </div>
+    </form>
 
 
 </body>
